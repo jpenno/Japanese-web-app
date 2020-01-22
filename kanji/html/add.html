@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../../index.css" />
+
+    <title>ADD</title>
+  </head>
+  <body>
+    <div class="container text-center">
+      <h1>ADD</h1>
+      <form id="Kanji-form">
+        <div class="form-group" >
+          <div class="form-group" align="center">
+            <label for="kanji">Kanji</label>
+            <input
+              type="text"
+              class="form-control"
+              id="kanji-User-Input"
+              placeholder=""
+            />
+          </div>
+        </div>
+        <div class="form-group" align="center">
+          <label for="meaning">Meaning</label>
+          <input
+            type="text"
+            class="form-control"
+            id="meaning-User-Input"
+            placeholder=""
+          />
+        </div>
+        <input
+          type="submit"
+          value="Add Kanji"
+          class="btn btn-primary btn-block"
+        />
+      </form>
+      <div class="showAdded"></div>
+      <div class="fixed-bottom">
+        <a href="../../index.html" class="navLink">Home</a>
+        <a href="kanji.html" class="navLink">Back</a>
+      </div>
+    </div>   
+    <script src="../js/add.js"></script>
+  </body>
+</html>
