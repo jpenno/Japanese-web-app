@@ -8,11 +8,7 @@ const collection = "todo";
 const app = express();
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, "public")));
-
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "../", "public", "index.html"));
-// });
+app.use(express.static(path.join(__dirname, "../", "public")));
 
 const start = () =>{
   app.listen(3000, () => {
