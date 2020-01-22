@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", e => {
-  console.log(Store.GetKanji());
 });
 
 // Kanji class
@@ -16,7 +15,7 @@ class Store {
     let kanjis;
     // check if saved data exists
     if (localStorage.getItem("kanjis") === null) {
-      // if save data dosent exists return empty arry
+      // if save data docent exists return empty arry
       return [];
     } else {
       // if save data exists return save data
@@ -24,11 +23,18 @@ class Store {
     }
   }
 
-  // save kanji to local storage
+  // add kanji to database
   static addkanji(kanji) {
-    const kanjis = Store.GetKanji();
-    kanjis.push(kanji);
-    localStorage.setItem("kanjis", JSON.stringify(kanjis));
+    fetch("/", {
+      method: "post",
+      body: JSON.stringify({
+        character: kanji.character,
+        meaning: kanji.meaning
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    });
   }
 }
 
@@ -58,24 +64,11 @@ document.getElementById("Kanji-form").addEventListener("submit", e => {
   // check that the fields are filled out
   if (userkanji.character === "" || userkanji.meaning === "") {
     UI.showAlert("please fill in all fields", "danger");
-  }// check that just one kanji gets enterd
-  else if(userkanji.character.length != 1){
+  } // check that just one kanji gets entered
+  else if (userkanji.character.length != 1) {
     UI.showAlert("check kanji input", "danger");
-  }else {
-    const kanjis = Store.GetKanji();
-    var copy = false;
-    // check if the kanji being added is allready there
-    kanjis.forEach(kanji => {
-      if (userkanji.character === kanji.character) {
-        copy = true;
-      }
-    });
-
-    if (copy) {
-      UI.showAlert("copy", "danger");
-    }else{
-      Store.addkanji(userkanji);
-    }
+  } else {
+    Store.addkanji(userkanji);
   }
   // clear the input fields
   document.getElementById("kanji-User-Input").value = "";
