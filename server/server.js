@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "../", "public")));
 
-app.get("/Kanji", (req, res) => {
+app.get("/getKanji", (req, res) => {
   db.getDB()
     .collection(collection)
     .find({})

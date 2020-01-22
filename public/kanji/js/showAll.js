@@ -1,21 +1,8 @@
 document.addEventListener("DOMContentLoaded", e => {
-  // get kanjis from saved data
-  const kanjis = Store.GetKanji();
-  // build table of kanjis
-  kanjis.forEach(kanji => {
-    const list = document.getElementById("kanji-list");
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-    <td>${kanji.character}</td>
-    <td>${kanji.meaning}</td>
-    `;
-    // add table to page
-    list.appendChild(row);
-  });
+  Store.GetKanji();
 });
 
-// clear search resluts function
+// clear search results function
 document.getElementById("clear-search-button").addEventListener("click", e => {
   // remove search results div
   document.getElementById("results").remove();
@@ -38,7 +25,7 @@ document.getElementById("search-button").addEventListener("click", e => {
 
   // check is results table exists
   if (!document.getElementById("results")) {
-    // if resultes table exists make results table
+    // if results table exists make results table
     const searchList = document.getElementById("results-container");
     const div = document.createElement("div");
     div.id = "results";
@@ -55,7 +42,7 @@ document.getElementById("search-button").addEventListener("click", e => {
         <tbody id="search-results">
         </tbody>
       </table>`;
-    // add the search reslts div
+    // add the search results div
     searchList.appendChild(div);
   } else {
     // clear old search results
@@ -77,18 +64,33 @@ document.getElementById("search-button").addEventListener("click", e => {
   });
 });
 
+// display Kanji
+const displayKanji = data =>{
+  data.forEach(kanji => {
+    const list = document.getElementById("kanji-list");
+    const row = document.createElement("tr");
+    
+    row.innerHTML = `
+    <td>${kanji.character}</td>
+    <td>${kanji.meaning}</td>
+    `;
+    // add table to page
+    list.appendChild(row);
+  })
+};
+
+
 // Store Class: Handle Storage
 class Store {
   static GetKanji() {
-    let kanjis;
-    // check if saved data exists
-    if (localStorage.getItem("kanjis") === null) {
-      // if save data dosent exists return empty arry
-      return [];
-    } else {
-      // if save data exists return save data
-      return JSON.parse(localStorage.getItem("kanjis"));
-    }
+    fetch("/getKanji", { method: "get" })
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      console.log(data);
+      displayKanji(data);
+    });
   }
 
   // save kanji to local storage
@@ -98,6 +100,7 @@ class Store {
     localStorage.setItem("kanjis", JSON.stringify(kanjis));
   }
 }
+
 
 // Kanji class
 class Kanji {
