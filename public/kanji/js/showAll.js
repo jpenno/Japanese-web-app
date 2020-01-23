@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", e => {
-  Store.GetKanji();
+  displayKanji();
 });
 
 // clear search results function
@@ -12,16 +12,6 @@ document.getElementById("clear-search-button").addEventListener("click", e => {
 document.getElementById("search-button").addEventListener("click", e => {
   // Prevent actual submit
   e.preventDefault();
-  // get the user search data
-  const search = document.getElementById("search-input").value;
-  const kanjis = Store.GetKanji();
-
-  // get search results
-  const searchResults = kanjis.filter(kanji => {
-    if (kanji.character === search) {
-      return kanji;
-    }
-  });
 
   // check is results table exists
   if (!document.getElementById("results")) {
@@ -48,6 +38,38 @@ document.getElementById("search-button").addEventListener("click", e => {
     // clear old search results
     document.getElementById("search-results").innerHTML = "";
   }
+  // get the user search data
+  const search = document.getElementById("search-input").value;
+
+  showSearchResults(search);
+});
+
+// display Kanji
+async function displayKanji() {
+  console.log("test");
+  const data = await GetKanji();
+
+  data.forEach(kanji => {
+    const list = document.getElementById("kanji-list");
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+    <td>${kanji.character}</td>
+    <td>${kanji.meaning}</td>
+    `;
+    // add table to page
+    list.appendChild(row);
+  });
+}
+
+async function showSearchResults(search) {
+  // get search results
+  const kanjis = await GetKanji();
+  const searchResults = kanjis.filter(kanji => {
+    if (kanji.character === search) {
+      return kanji;
+    }
+  });
 
   // show search results
   searchResults.forEach(kanji => {
@@ -55,52 +77,21 @@ document.getElementById("search-button").addEventListener("click", e => {
     const row = document.createElement("tr");
     // make the row to add to results
     row.innerHTML = `
-      <td>${kanji.character}</td>
-      <td>${kanji.meaning}</td>
-      `;
+        <td>${kanji.character}</td>
+        <td>${kanji.meaning}</td>
+        `;
 
     // add row to table
     list.appendChild(row);
   });
-});
-
-// display Kanji
-const displayKanji = data =>{
-  data.forEach(kanji => {
-    const list = document.getElementById("kanji-list");
-    const row = document.createElement("tr");
-    
-    row.innerHTML = `
-    <td>${kanji.character}</td>
-    <td>${kanji.meaning}</td>
-    `;
-    // add table to page
-    list.appendChild(row);
-  })
-};
-
-
-// Store Class: Handle Storage
-class Store {
-  static GetKanji() {
-    fetch("/getKanji", { method: "get" })
-    .then(response => {
-      return response.json();
-    })
-    .then(data => {
-      console.log(data);
-      displayKanji(data);
-    });
-  }
-
-  // save kanji to local storage
-  static addkanji(kanji) {
-    const kanjis = Store.GetKanji();
-    kanjis.push(kanji);
-    localStorage.setItem("kanjis", JSON.stringify(kanjis));
-  }
 }
 
+// Get kanji from database
+async function GetKanji() {
+  const res = await fetch("/getKanji", { method: "get" });
+  const data = await res.json();
+  return data;
+}
 
 // Kanji class
 class Kanji {
