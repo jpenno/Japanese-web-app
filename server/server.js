@@ -79,6 +79,21 @@ app.post("/", (req, res, next) => {
   });
 });
 
+app.delete("/:id", (req, res) => {
+  const kanjiID = req.params.id;
+
+  db.getDB()
+    .collection(collection)
+    .findOneAndDelete({ _id: db.getPrimaryKey(kanjiID) }, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(result);
+      }
+    });
+});
+
+
 app.use((err, req, res, next) => {
   res.status(err.status).json({
     error: {
