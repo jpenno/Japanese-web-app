@@ -27,8 +27,8 @@ document.getElementById("search-button").addEventListener("click", e => {
     div.id = "results";
 
     div.innerHTML = `
-      <h2 id='resulte-heading'>Results</h2>
-      <table id='resultes-table' class="table table-striped mt-5">
+      <h2 id='result-heading'>Results</h2>
+      <table id='results-table' class="table table-striped mt-5">
         <thead>
           <tr>
             <th scope="col">Kanji</th>
