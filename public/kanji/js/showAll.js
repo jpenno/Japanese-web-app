@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", e => {
 document.getElementById("clear-search-button").addEventListener("click", e => {
   // remove search results div
   document.getElementById("results").remove();
+  document.getElementById("search-input").value = "";
 });
 
 // search function
