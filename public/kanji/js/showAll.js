@@ -1,3 +1,8 @@
+// load jquery
+var script = document.createElement("script");
+script.src = "//code.jquery.com/jquery-1.11.0.min.js";
+document.getElementsByTagName("head")[0].appendChild(script);
+
 document.addEventListener("DOMContentLoaded", e => {
   displayKanji();
 });
@@ -50,17 +55,7 @@ async function displayKanji() {
   console.log("test");
   const data = await GetKanji();
 
-  data.forEach(kanji => {
-    const list = document.getElementById("kanji-list");
-    const row = document.createElement("tr");
-
-    row.innerHTML = `
-    <td>${kanji.character}</td>
-    <td>${kanji.meaning}</td>
-    `;
-    // add table to page
-    list.appendChild(row);
-  });
+  buildTable(data, "kanji-list")
 }
 
 async function showSearchResults(search) {
@@ -72,19 +67,7 @@ async function showSearchResults(search) {
     }
   });
 
-  // show search results
-  searchResults.forEach(kanji => {
-    const list = document.getElementById("search-results");
-    const row = document.createElement("tr");
-    // make the row to add to results
-    row.innerHTML = `
-        <td>${kanji.character}</td>
-        <td>${kanji.meaning}</td>
-        `;
-
-    // add row to table
-    list.appendChild(row);
-  });
+  buildTable(searchResults, "search-results")
 }
 
 // Get kanji from database
@@ -101,3 +84,46 @@ class Kanji {
     this.meaning = meaning;
   }
 }
+
+// build the table that displays the kanji
+const buildTable = (list, element) =>{
+  list.forEach(i => {
+    const list = document.getElementById(element);
+    list.appendChild(buildRow(i));
+    deleteKanji(i);
+  });
+}
+
+// build a row for the table
+const buildRow = (kanji) =>{
+  const row = document.createElement("tr");
+  row.id = `row-${kanji._id}`
+  row.innerHTML = `
+  <td>${kanji.character}</td>
+  <td>${kanji.meaning}</td>
+  <td>
+    <button type="button" class="btn btn-danger" id="${kanji._id}">Delete</button>
+  </td>
+  `;
+
+  return row;
+}
+
+// set up the delete button
+const deleteKanji = (kanji) => {
+  console.log("kanji", kanji);
+  let deleteBtn = $(`#${kanji._id}`);
+  deleteBtn.click(() => {
+    fetch(`/${kanji._id}`, {
+      method: "delete"
+    })
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        if (data.ok == 1) {
+          $(`#row-${kanji._id}`).remove();
+        }
+      });
+  });
+};
