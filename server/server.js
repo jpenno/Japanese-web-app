@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 const schema = joi.object().keys({
   character: joi
     .string()
-    .max(4, "utf8")
+    .max(1)
     .required(),
   meaning: joi.string().required()
 });
@@ -36,8 +36,6 @@ app.get("/getKanji", (req, res) => {
 // create
 app.post("/", (req, res, next) => {
   const userInput = req.body;
-  // trim white space
-  userInput.character = userInput.character.trim();
 
   joi.validate(userInput, schema, async (err, result) => {
     if (err) {
@@ -71,7 +69,7 @@ app.post("/", (req, res, next) => {
               res.json({
                 result: result,
                 document: result.ops[0],
-                msg: `Successfully inserted kanji ${userInput.character}`,
+                msg: `Successfully inserted ${userInput.character}`,
                 error: null
               });
             }
