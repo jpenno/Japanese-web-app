@@ -27,7 +27,7 @@ class Store {
 
   // add kanji to database
   static async addkanji(kanji) {
-    const res = await fetch("/", {
+    const res = await fetch("/kanji", {
       method: "post",
       body: JSON.stringify({
         character: kanji.character,
@@ -57,17 +57,6 @@ document.getElementById("Kanji-form").addEventListener("submit", e => {
 
   const userkanji = new Kanji(character, meaning);
   Store.addkanji(userkanji);
-
-
-  // // check that the fields are filled out
-  // if (userkanji.character === "" || userkanji.meaning === "") {
-  //   UI.showAlert("please fill in all fields", "danger");
-  // } // check that just one kanji gets entered
-  // else if (userkanji.character.length != 1) {
-  //   UI.showAlert("check kanji input", "danger");
-  // } else {
-  //   Store.addkanji(userkanji);
-  // }
 });
 
 const displayMessage = (flag, msg) => {

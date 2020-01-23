@@ -70,7 +70,7 @@ async function showSearchResults(search) {
 
 // Get kanji from database
 async function GetKanji() {
-  const res = await fetch("/getKanji", { method: "get" });
+  const res = await fetch("/kanji", { method: "get" });
   const data = await res.json();
   return data;
 }
@@ -111,7 +111,7 @@ const buildRow = (kanji) =>{
 const deleteKanji = (kanji) => {
   let deleteBtn = $(`#${kanji._id}`);
   deleteBtn.click(() => {
-    fetch(`/${kanji._id}`, {
+    fetch(`/kanji/${kanji._id}`, {
       method: "delete"
     })
       .then(response => {
