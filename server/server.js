@@ -7,9 +7,9 @@ const collection = require("../config/keys").Collection;
 const app = express();
 app.use(bodyParser.json());
 
-const items = require('../api/kanji');
+const kanji = require('../api/kanji');
 // Use Routes
-app.use('/kanji', items);
+app.use('/kanji', kanji);
 
 app.use(express.static(path.join(__dirname, "../", "public")));
 
