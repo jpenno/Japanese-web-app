@@ -1,5 +1,7 @@
-document.addEventListener("DOMContentLoaded", e => {
-});
+// load jquery
+var script = document.createElement("script");
+script.src = "//code.jquery.com/jquery-1.11.0.min.js";
+document.getElementsByTagName("head")[0].appendChild(script);
 
 // Kanji class
 class Kanji {
@@ -24,8 +26,8 @@ class Store {
   }
 
   // add kanji to database
-  static addkanji(kanji) {
-    fetch("/", {
+  static async addkanji(kanji) {
+    const res = await fetch("/", {
       method: "post",
       body: JSON.stringify({
         character: kanji.character,
@@ -35,42 +37,56 @@ class Store {
         "Content-Type": "application/json; charset=utf-8"
       }
     });
-  }
-}
+    const data = await res.json();
 
-class UI {
-  static showAlert(message, className) {
-    const div = document.createElement("div");
-    div.className = `alert alert-${className} infomsg`;
-    div.appendChild(document.createTextNode(message));
-    const container = document.querySelector(".container");
-    const form = document.querySelector("#Kanji-form");
-    container.insertBefore(div, form);
-
-    // Vanish in 3 seconds
-    setTimeout(() => document.querySelector(".alert").remove(), 3000);
+    if (data.error) {
+      displayMessage(false, data.error.message);
+    } else {
+      displayMessage(true, data.msg);
+      ClearUserInput();
+    }
   }
 }
 
 document.getElementById("Kanji-form").addEventListener("submit", e => {
   // Prevent actual submit
   e.preventDefault();
-  console.log("Test");
+
   const character = document.getElementById("kanji-User-Input").value;
   const meaning = document.getElementById("meaning-User-Input").value;
 
   const userkanji = new Kanji(character, meaning);
+  Store.addkanji(userkanji);
 
-  // check that the fields are filled out
-  if (userkanji.character === "" || userkanji.meaning === "") {
-    UI.showAlert("please fill in all fields", "danger");
-  } // check that just one kanji gets entered
-  else if (userkanji.character.length != 1) {
-    UI.showAlert("check kanji input", "danger");
+
+  // // check that the fields are filled out
+  // if (userkanji.character === "" || userkanji.meaning === "") {
+  //   UI.showAlert("please fill in all fields", "danger");
+  // } // check that just one kanji gets entered
+  // else if (userkanji.character.length != 1) {
+  //   UI.showAlert("check kanji input", "danger");
+  // } else {
+  //   Store.addkanji(userkanji);
+  // }
+});
+
+const displayMessage = (flag, msg) => {
+  const message = $("#message");
+  // successful
+  if (flag) {
+    message.removeClass("alert-danger");
+    message.addClass("alert-success");
+    message.html(msg);
+    message.show();
   } else {
-    Store.addkanji(userkanji);
+    message.removeClass("alert-success");
+    message.addClass("alert-danger");
+    message.html(msg);
+    message.show();
   }
-  // clear the input fields
+};
+
+const ClearUserInput = () => {
   document.getElementById("kanji-User-Input").value = "";
   document.getElementById("meaning-User-Input").value = "";
-});
+};

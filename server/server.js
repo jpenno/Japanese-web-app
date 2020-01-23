@@ -1,11 +1,20 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const path = require("path");
+const joi = require("joi");
 
 const db = require("./db");
 const collection = require("../config/keys").Collection;
 const app = express();
 app.use(bodyParser.json());
+
+const schema = joi.object().keys({
+  character: joi
+    .string()
+    .max(4, "utf8")
+    .required(),
+  meaning: joi.string().required()
+});
 
 app.use(express.static(path.join(__dirname, "../", "public")));
 
@@ -27,18 +36,28 @@ app.get("/getKanji", (req, res) => {
 // create
 app.post("/", (req, res, next) => {
   const userInput = req.body;
-  console.log(userInput.character);
-  console.log("check if character  is there");
+  // trim white space
+  userInput.character = userInput.character.trim();
 
-  // check if the character exists in the data base already
-  db.getDB()
-    .collection(collection)
-    .find({ character: userInput.character })
-    .count()
-    .then(count => {
-      console.log("count", count);
-      if (count > 0) {
-        // TODO: add error handling to let the user know the character already exists
+  joi.validate(userInput, schema, async (err, result) => {
+    if (err) {
+      const error = new Error("Invalid Input");
+      error.status = 400;
+      next(error);
+    } else {
+      // check if the character exists in the data base already
+      const exists =
+        (await db
+          .getDB()
+          .collection(collection)
+          .find({ character: userInput.character })
+          .count()) > 0;
+
+      if (exists) {
+        // if the character exists send an error msg back
+        const error = new Error("character is already there");
+        error.status = 400;
+        next(error);
       } else {
         // if the character doesn't already exist add it to the database
         db.getDB()
@@ -52,13 +71,22 @@ app.post("/", (req, res, next) => {
               res.json({
                 result: result,
                 document: result.ops[0],
-                msg: "Successfully inserted Todo",
+                msg: `Successfully inserted kanji ${userInput.character}`,
                 error: null
               });
             }
           });
       }
-    });
+    }
+  });
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.status).json({
+    error: {
+      message: err.message
+    }
+  });
 });
 
 db.connect(err => {
