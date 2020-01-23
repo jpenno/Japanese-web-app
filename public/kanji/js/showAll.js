@@ -52,9 +52,7 @@ document.getElementById("search-button").addEventListener("click", e => {
 
 // display Kanji
 async function displayKanji() {
-  console.log("test");
   const data = await GetKanji();
-
   buildTable(data, "kanji-list")
 }
 
@@ -111,7 +109,6 @@ const buildRow = (kanji) =>{
 
 // set up the delete button
 const deleteKanji = (kanji) => {
-  console.log("kanji", kanji);
   let deleteBtn = $(`#${kanji._id}`);
   deleteBtn.click(() => {
     fetch(`/${kanji._id}`, {
