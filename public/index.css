@@ -1,16 +1,12 @@
-h1{
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 80px;
-  text-align: center;
-  color: black;
-  text-decoration: underline;
-  padding-bottom: 30px;
-}
-
 li{
   font-family: Arial, Helvetica, sans-serif;
   padding-bottom: 20px;
   list-style-type: none;
+}
+
+label{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28px;
 }
 
 .link{
@@ -39,3 +35,4 @@ li{
   padding-right: 2%;
   color: black;
 }
+
