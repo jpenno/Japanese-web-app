@@ -5,9 +5,12 @@ document.getElementsByTagName("head")[0].appendChild(script);
 
 // Kanji class
 class Kanji {
-  constructor(character, meaning) {
+  constructor(character, meaning, kunReading, onReading, jisyoLink) {
     this.character = character;
     this.meaning = meaning;
+    this.kunReading = kunReading;
+    this.onReading = onReading;
+    this.jisyoLink = jisyoLink;
   }
 }
 
@@ -31,7 +34,10 @@ class Store {
       method: "post",
       body: JSON.stringify({
         character: kanji.character,
-        meaning: kanji.meaning
+        meaning: kanji.meaning,
+        kunReading: kanji.kunReading,
+        onReading: kanji.onReading,
+        jisyoLink: kanji.jisyoLink
       }),
       headers: {
         "Content-Type": "application/json; charset=utf-8"
@@ -54,8 +60,17 @@ document.getElementById("Kanji-form").addEventListener("submit", e => {
 
   const character = document.getElementById("kanji-User-Input").value;
   const meaning = document.getElementById("meaning-User-Input").value;
+  const kunReading = document.getElementById("kunreading-User-Input").value;
+  const OnReading = document.getElementById("onreading-User-Input").value;
+  const jisyoLink = document.getElementById("jisyoLink-User-Input").value;
 
-  const userkanji = new Kanji(character, meaning);
+  const userkanji = new Kanji(
+    character,
+    meaning,
+    kunReading,
+    OnReading,
+    jisyoLink
+  );
   Store.addkanji(userkanji);
 });
 
@@ -78,4 +93,7 @@ const displayMessage = (flag, msg) => {
 const ClearUserInput = () => {
   document.getElementById("kanji-User-Input").value = "";
   document.getElementById("meaning-User-Input").value = "";
+  document.getElementById("kunreading-User-Input").value = "";
+  document.getElementById("onreading-User-Input").value = "";
+  document.getElementById("jisyoLink-User-Input").value = "";
 };

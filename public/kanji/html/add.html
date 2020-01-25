@@ -4,10 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <link
-      rel="stylesheet"
-      href="/bootstrap.min.css"
-    />
+    <link rel="stylesheet" href="/bootstrap.min.css" />
     <link rel="stylesheet" href="../../index.css" />
 
     <title>ADD</title>
@@ -16,25 +13,69 @@
     <div class="container text-center">
       <h1>ADD</h1>
       <form id="Kanji-form">
-        <div class="form-group" >
-          <div class="form-group" align="center">
-            <label for="kanji">Kanji</label>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="kanji">Kanji</label>
+              <input
+                type="text"
+                class="form-control"
+                id="kanji-User-Input"
+                placeholder=""
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="meaning">Meaning</label>
+              <input
+                type="text"
+                class="form-control"
+                id="meaning-User-Input"
+                placeholder=""
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="form-group">
+              <label for="kanji">Kun Reading</label>
+              <input
+                type="text"
+                class="form-control"
+                id="kunreading-User-Input"
+                placeholder=""
+                autocomplete="off"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="kanji">On Reading</label>
+              <input
+                type="text"
+                class="form-control"
+                id="onreading-User-Input"
+                placeholder=""
+                autocomplete="off"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="form-group">
+            <label for="kanji">JisyoLink</label>
             <input
               type="text"
               class="form-control"
-              id="kanji-User-Input"
+              id="jisyoLink-User-Input"
               placeholder=""
+              autocomplete="off"
             />
           </div>
-        </div>
-        <div class="form-group" align="center">
-          <label for="meaning">Meaning</label>
-          <input
-            type="text"
-            class="form-control"
-            id="meaning-User-Input"
-            placeholder=""
-          />
         </div>
         <input
           type="submit"
@@ -48,7 +89,7 @@
         <a href="kanji.html" class="navLink">Back</a>
       </div>
       <div class="alert mt-3" role="alert" id="message"></div>
-    </div>   
+    </div>
     <script src="../js/add.js"></script>
   </body>
 </html>

@@ -3,14 +3,17 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("../server/db");
-const collection = require("../config/keys").Collection;
+const collection = require("../config/keys").kanjiCollection;
 
 const schema = joi.object().keys({
   character: joi
     .string()
     .max(1)
     .required(),
-  meaning: joi.string().required()
+  meaning: joi.string().required(),
+  kunReading: joi.string().required(),
+  onReading: joi.string().required(),
+  jisyoLink: joi.string().required()
 });
 
 // @route  Get api/kanji
@@ -39,6 +42,7 @@ router.post("/", (req, res, next) => {
 
   joi.validate(userInput, schema, async (err, result) => {
     if (err) {
+      console.log(err);
       const error = new Error("Invalid Input");
       error.status = 400;
       next(error);
