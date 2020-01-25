@@ -53,7 +53,7 @@ document.getElementById("search-button").addEventListener("click", e => {
 // display Kanji
 async function displayKanji() {
   const data = await GetKanji();
-  buildTable(data, "kanji-list")
+  buildTable(data, "kanji-list");
 }
 
 async function showSearchResults(search) {
@@ -65,7 +65,7 @@ async function showSearchResults(search) {
     }
   });
 
-  buildTable(searchResults, "search-results")
+  buildTable(searchResults, "search-results");
 }
 
 // Get kanji from database
@@ -75,41 +75,47 @@ async function GetKanji() {
   return data;
 }
 
-// Kanji class
-class Kanji {
-  constructor(character, meaning) {
-    this.character = character;
-    this.meaning = meaning;
-  }
-}
-
 // build the table that displays the kanji
-const buildTable = (list, element) =>{
+const buildTable = (list, element) => {
   list.forEach(i => {
+    const ids = buildIDS(i);
     const list = document.getElementById(element);
-    list.appendChild(buildRow(i));
-    deleteKanji(i);
+    list.appendChild(buildRow(i, ids));
+    kanjiInfo(i, ids);
+    deleteKanji(i, ids);
   });
-}
+};
 
 // build a row for the table
-const buildRow = (kanji) =>{
+const buildRow = (kanji, ids) => {
   const row = document.createElement("tr");
-  row.id = `row-${kanji._id}`
+  row.id = `${ids.rowID}`;
   row.innerHTML = `
   <td>${kanji.character}</td>
   <td>${kanji.meaning}</td>
   <td>
-    <button type="button" class="btn btn-danger" id="${kanji._id}">Delete</button>
+    <button type="button" href="../html/kanji-info-page.html" class="btn btn-info" id="${ids.infoID}">Info</button>
+  </td>
+  <td>
+    <button type="button" class="btn btn-danger" id="${ids.deleteID}">Delete</button>
   </td>
   `;
 
   return row;
-}
+};
+
+// set up info button
+const kanjiInfo = (kanji, ids) => {
+  const infoBtn = $(`#${ids.infoID}`);
+  infoBtn.click(() => {
+    console.log("show kanji info");
+    window.location.href = "../html/kanji-info-page.html" + '#' + kanji._id;
+  });
+};
 
 // set up the delete button
-const deleteKanji = (kanji) => {
-  let deleteBtn = $(`#${kanji._id}`);
+const deleteKanji = (kanji, ids) => {
+  const deleteBtn = $(`#${ids.deleteID}`);
   deleteBtn.click(() => {
     fetch(`/kanji/${kanji._id}`, {
       method: "delete"
@@ -119,8 +125,16 @@ const deleteKanji = (kanji) => {
       })
       .then(data => {
         if (data.ok == 1) {
-          $(`#row-${kanji._id}`).remove();
+          $(`#${ids.rowID}`).remove();
         }
       });
   });
+};
+
+const buildIDS = kanji => {
+  return {
+    rowID: `row-${kanji._id}`,
+    infoID: `info-${kanji._id}`,
+    deleteID: `delete-${kanji._id}`
+  };
 };

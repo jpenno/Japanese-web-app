@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <style>
+      .kanjiTitle {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 150px;
+      }
+      .headings {
+        font-size: 30px;
+        font-family: Arial, Helvetica, sans-serif;
+        text-decoration: underline;
+      }
+      .kanjiReading {
+        font-size: 24px;
+        font-family: Arial, Helvetica, sans-serif;
+        text-decoration: none;
+        text-align: justify;
+      }
+    </style>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="stylesheet" href="../../bootstrap.min.css" />
+
+    <title>kanji info</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="input-group mb-3 mt-3 ">
+        <input
+          id="search-input"
+          type="text"
+          class="form-control"
+          placeholder="Search"
+          aria-label="userSearch"
+          aria-describedby="search-button"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-secondary my-2 my-sm-0"
+            type="submit"
+            id="search-button"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    <br />
+    <div class="container">
+      <div class="row">
+        <div class="col-3">
+          <div class="row kanjiTitle">
+            <a
+              id="character"
+              class="kanjiTitle" 
+              href=""
+              target="_blank">
+            </a>
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="row">
+            <div class="card border-secondary mb-3 shadow" style="max-width: 20rem;">
+              <div class="card-header headings shadow-sm">Meanings</div>
+              <div class="card-body">
+                <p id="meaning" class="card-text kanjiReading"></p>
+              </div>
+            </div>
+
+          </div>
+          <div class="row">
+            <div class="card border-secondary mb-3 shadow" style="max-width: 20rem;">
+              <div class="card-header headings shadow-sm">kun readings</div>
+              <div class="card-body">
+                <p id="kunreading" class="card-text kanjiReading"></p>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="card border-secondary mb-3 shadow" style="max-width: 20rem;">
+              <div class="card-header headings shadow-sm">On readings</div>
+              <div class="card-body">
+                <p id="onreading" class="card-text kanjiReading">/p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="row justify-content-end">
+            <button type="button" class="btn btn-warning  mb-4">Edit</button>
+          </div>
+          <div class="row justify-content-end">
+            <button type="button" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script src="../js/info.js"></script>
+  </body>
+</html>

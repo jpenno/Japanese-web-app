@@ -20,7 +20,6 @@ const schema = joi.object().keys({
 // @desc   get all kanji
 // @access Public
 router.get("/", (req, res) => {
-  console.log("user tried to get kanji");
   db.getDB()
     .collection(collection)
     .find({})
@@ -33,8 +32,26 @@ router.get("/", (req, res) => {
       }
     });
 });
+// @route  Get api/kanji/:id
+// @desc   get a kanji
+// @access Public
+router.get("/:id", (req, res) => {
+  const kanjiID = req.params.id;
 
-// @route  Post api/kanji/:id
+  db.getDB()
+    .collection(collection)
+    .find({_id: db.getPrimaryKey(kanjiID) })
+    .toArray((err, documents) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(documents);
+        res.json(documents);
+      }
+    });
+});
+
+// @route  Post api/kanji/
 // @desc   Create a kanji
 // @access Public
 router.post("/", (req, res, next) => {
