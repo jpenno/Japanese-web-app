@@ -66,18 +66,34 @@
           </div>
         </div>
         <div class="form-group">
-          <div class="form-group">
-            <label for="kanji">JisyoLink</label>
-            <input
-              type="text"
-              class="form-control"
-              id="jisyoLink-User-Input"
-              placeholder=""
-              autocomplete="off"
-            />
-          </div>
+          <label for="kanji">JisyoLink</label>
+          <input
+            type="text"
+            class="form-control"
+            id="jisyoLink-User-Input"
+            placeholder=""
+            autocomplete="off"
+          />
         </div>
         <input
+          id="add-one-kanji"
+          type="submit"
+          value="Add Kanji"
+          class="btn btn-primary btn-block"
+        />
+        <div class="form-group">
+          <label for="kanji">Kanji csv</label>
+          <textarea 
+            type="text"
+            class="form-control"
+            id="kanji-csv-User-Input"
+            placeholder=""
+            autocomplete="off"
+          >
+          </textarea>
+        </div>
+        <input
+          id="add-kanji-csv"
           type="submit"
           value="Add Kanji"
           class="btn btn-primary btn-block"
@@ -90,6 +106,11 @@
       </div>
       <div class="alert mt-3" role="alert" id="message"></div>
     </div>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
     <script src="../js/add.js"></script>
   </body>
 </html>

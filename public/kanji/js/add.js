@@ -54,7 +54,7 @@ class Store {
   }
 }
 
-document.getElementById("Kanji-form").addEventListener("submit", e => {
+$("#add-one-kanji").click(e => {
   // Prevent actual submit
   e.preventDefault();
 
@@ -72,6 +72,30 @@ document.getElementById("Kanji-form").addEventListener("submit", e => {
     jisyoLink
   );
   Store.addkanji(userkanji);
+});
+
+$("#add-kanji-csv").click(async e => {
+  // Prevent actual submit
+  e.preventDefault();
+  console.log("add-csv click");
+  const csv = $('#kanji-csv-User-Input').val();
+  const res =  await fetch("/kanji/csv", {
+      method: "post",
+      body: JSON.stringify({
+        kanjiData: csv,
+      }),
+      headers: {
+        "Content-Type": "application/json; charset=utf-8"
+      }
+    });
+    const data = await res.json();
+
+    if (data.error) {
+      displayMessage(false, data.error.message);
+    } else {
+      displayMessage(true, data.msg);
+      ClearUserInput();
+    }
 });
 
 const displayMessage = (flag, msg) => {
