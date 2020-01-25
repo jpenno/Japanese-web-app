@@ -9,24 +9,30 @@ document.addEventListener("DOMContentLoaded", e => {
 
 // clear search results function
 document.getElementById("clear-search-button").addEventListener("click", e => {
-  // remove search results div
-  document.getElementById("results").remove();
+  // reset results container
+  $("#results-container").empty();
   document.getElementById("search-input").value = "";
 });
 
 // search function
-document.getElementById("search-button").addEventListener("click", e => {
+document.getElementById("search-button").addEventListener("click", async e => {
   // Prevent actual submit
   e.preventDefault();
+  // reset results container
+  $("#results-container").empty();
+  // get the user search data
+  const search = document.getElementById("search-input").value;
+  // check if the user enter data
+  if (search.length > 0) {
+    const searchResults = await GetSearchResults(search);
+    console.log(searchResults);
+    if (searchResults.length > 0) {
+      // if results table exists make results table
+      const searchList = document.getElementById("results-container");
+      const div = document.createElement("div");
+      div.id = "results";
 
-  // check is results table exists
-  if (!document.getElementById("results")) {
-    // if results table exists make results table
-    const searchList = document.getElementById("results-container");
-    const div = document.createElement("div");
-    div.id = "results";
-
-    div.innerHTML = `
+      div.innerHTML = `
       <h2 id='result-heading'>Results</h2>
       <table id='results-table' class="table table-striped mt-5">
         <thead>
@@ -38,16 +44,28 @@ document.getElementById("search-button").addEventListener("click", e => {
         <tbody id="search-results">
         </tbody>
       </table>`;
-    // add the search results div
-    searchList.appendChild(div);
-  } else {
-    // clear old search results
-    document.getElementById("search-results").innerHTML = "";
-  }
-  // get the user search data
-  const search = document.getElementById("search-input").value;
+      // add the search results div
+      searchList.appendChild(div);
 
-  showSearchResults(search);
+      buildTable(searchResults, "search-results");
+    } else {
+      // make a button to take you to add kanji page
+      const addKanjiBtn = document.createElement("div");
+      addKanjiBtn.innerHTML = `
+      <div id="add-kanji-button-div">
+        <button type="button" id="add-kanji-button" class="btn btn-info">
+          Add Kanji
+        </button>
+      </div>`;
+      // add button to page
+      document.getElementById("results-container").appendChild(addKanjiBtn);
+
+      $("#add-kanji-button").click(() => {
+        // when kanji button clicked go to add kanji page
+        window.location.href = "../html/add.html";
+      });
+    }
+  }
 });
 
 // display Kanji
@@ -56,7 +74,7 @@ async function displayKanji() {
   buildTable(data, "kanji-list");
 }
 
-async function showSearchResults(search) {
+async function GetSearchResults(search) {
   // get search results
   const kanjis = await GetKanji();
   const searchResults = kanjis.filter(kanji => {
@@ -65,7 +83,7 @@ async function showSearchResults(search) {
     }
   });
 
-  buildTable(searchResults, "search-results");
+  return searchResults;
 }
 
 // Get kanji from database
@@ -94,7 +112,7 @@ const buildRow = (kanji, ids) => {
   <td>${kanji.character}</td>
   <td>${kanji.meaning}</td>
   <td>
-    <button type="button" href="../html/kanji-info-page.html" class="btn btn-info" id="${ids.infoID}">Info</button>
+    <button type="button" class="btn btn-info" id="${ids.infoID}">Info</button>
   </td>
   <td>
     <button type="button" class="btn btn-danger" id="${ids.deleteID}">Delete</button>
@@ -109,7 +127,7 @@ const kanjiInfo = (kanji, ids) => {
   const infoBtn = $(`#${ids.infoID}`);
   infoBtn.click(() => {
     console.log("show kanji info");
-    window.location.href = "../html/kanji-info-page.html" + '#' + kanji._id;
+    window.location.href = "../html/kanji-info-page.html" + "#" + kanji._id;
   });
 };
 
