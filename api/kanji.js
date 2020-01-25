@@ -13,7 +13,7 @@ const schema = joi.object().keys({
   meaning: joi.string().required(),
   kunReading: joi.string().required(),
   onReading: joi.string().required(),
-  jisyoLink: joi.string().required()
+  jisyo: joi.string().required()
 });
 
 // @route  Get api/kanji
