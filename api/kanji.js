@@ -28,7 +28,6 @@ router.get("/", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(documents);
         res.json(documents);
       }
     });
@@ -46,7 +45,6 @@ router.get("/:id", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(documents);
         res.json(documents);
       }
     });
@@ -65,7 +63,6 @@ router.get("/getkanji/:kanji", (req, res) => {
       if (err) {
         console.log(err);
       } else {
-        console.log(documents);
         res.json(documents);
       }
     });
@@ -152,9 +149,7 @@ router.post("/csv", async (req, res, next) => {
       return acc;
     }
   }, []);
-  console.log("kanjis len: ", kanjis.length);
-  console.log("filteredArr len: ", filteredArr.length);
-
+  
   filteredArr.forEach(async (kanji, i) => {
     // check if the character exists in the data base already
     const exists =

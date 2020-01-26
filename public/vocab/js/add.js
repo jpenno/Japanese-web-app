@@ -44,7 +44,6 @@ $("#add-word").click(async e => {
     kanjiInWord: kanjiList,
   }
 
-  console.log('vocab', vocab);
   addVocab(vocab);
   // check if the user needs to add kanji
   if (needToAddList.length > 0) {

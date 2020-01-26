@@ -19,8 +19,6 @@ const schema = joi.object().keys({
 // @access Public
 router.post("/", (req, res, next) => {
   const userInput = req.body;
-  console.log('add vocab');
-  console.log('userInput', userInput);
 
   joi.validate(userInput, schema, async (err, result) => {
     if (err) {
