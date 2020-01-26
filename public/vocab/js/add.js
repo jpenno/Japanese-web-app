@@ -99,3 +99,10 @@ async function addVocab(vocab) {
     ClearUserInput();
   }
 }
+
+const ClearUserInput = () => {
+  $("#word-user-input").val("");
+  $("#reading-user-input").val("");
+  $("#meaning-user-input").val("");
+  $("#jisyoLink-user-input").val("");
+};
