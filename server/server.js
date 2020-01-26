@@ -8,8 +8,10 @@ const app = express();
 app.use(bodyParser.json());
 
 const kanji = require('../api/kanji');
+const vocab = require('../api/vocab');
 // Use Routes
 app.use('/kanji', kanji);
+app.use('/vocab', vocab);
 
 app.use(express.static(path.join(__dirname, "../", "public")));
 

@@ -34,7 +34,7 @@ router.get("/", (req, res) => {
     });
 });
 // @route  Get api/kanji/:id
-// @desc   get a kanji
+// @desc   get a kanji based on id
 // @access Public
 router.get("/:id", (req, res) => {
   const kanjiID = req.params.id;
@@ -42,6 +42,25 @@ router.get("/:id", (req, res) => {
   db.getDB()
     .collection(collection)
     .find({ _id: db.getPrimaryKey(kanjiID) })
+    .toArray((err, documents) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(documents);
+        res.json(documents);
+      }
+    });
+});
+
+// @route  Get api/getkanji/:kanji
+// @desc   get a kanji based on kanji
+// @access Public
+router.get("/getkanji/:kanji", (req, res) => {
+  const kanji = req.params.kanji;
+
+  db.getDB()
+    .collection(collection)
+    .find({ character: kanji })
     .toArray((err, documents) => {
       if (err) {
         console.log(err);
@@ -100,7 +119,9 @@ router.post("/", (req, res, next) => {
     }
   });
 });
-
+// @route  Post api/csv/
+// @desc   Create kanji from csv
+// @access Public
 router.post("/csv", async (req, res, next) => {
   const kanjiData = req.body.kanjiData;
 
