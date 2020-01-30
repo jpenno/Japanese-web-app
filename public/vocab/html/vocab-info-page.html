@@ -8,7 +8,7 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
     <link rel="stylesheet" href="../../bootstrap.min.css" />
-    <link rel="stylesheet" href="../../index.css">
+    <link rel="stylesheet" href="../../index.css" />
 
     <title>kanji info</title>
   </head>
@@ -37,10 +37,11 @@
         <div class="col-lg-2"></div>
         <div class="col-md-auto wordColl">
           <div class="row">
-            <span class="furugana text-muted">へいじつ</span>
+            <span id="furugana" class="furugana text-muted">へいじつ</span>
           </div>
           <div class="row">
             <a
+              id="word"
               class="word"
               href="https://jisho.org/search/%E8%A1%8C%23kanji"
               target="_blank"
@@ -48,76 +49,38 @@
             >
           </div>
           <div class="row">
-            <p class="card-text">
+            <p id="meaning" class="card-text">
               Weekdays
             </p>
           </div>
         </div>
-        <div class="col-sm-5 kanjiColl">
+        <div id="kanji-in-word"></div>
+        <!-- <div class="col-sm-5 kanjiColl">
           <div class="row">
             <div class="col-sm-2 ">
-              <span class="">
-                <a
-                  class="kanji"
-                  href="https://jisho.org/search/%E8%A1%8C%23kanji"
-                  target="_blank"
-                >
-                  平
-                </a>
-              </span>
-            </div>
-            <div class="col-sm-8 ">
-              <div class="row">
-                <span class="kanjiMeanings text-info"> even, flat, peace </span>
-              </div>
-              <div class="row">
-                <span class="heading">Kun: </span>
-                <span class="text-info">
-                  たい.ら、 たい.らげる、 ひら
-                </span>  
-              </div>
-              <div class="row">
-                <span class="heading">On: </span>
-                <span class=" text-info">
-                  ヘイ、 ビョウ、 ヒョウ
-                </span>  
-              </div>
-              <hr />
-            </div>
-        </div>
-        <div class="row">
-          <div class="col-sm-2 ">
-            <span class="">
               <a
                 class="kanji"
                 href="https://jisho.org/search/%E8%A1%8C%23kanji"
                 target="_blank"
               >
-              日
+                平
               </a>
-            </span>
+            </div>
+            <div class="col-sm-8 ">
+              <div class="row kanjiMeanings text-info">
+                even, flat, peace
+              </div>
+              <div class="row kunReading text-info">
+                たい.ら、 たい.らげる、 ひら
+              </div>
+              <div class="row kunReading text-info">
+                ヘイ、 ビョウ、 ヒョウ
+              </div>
+            </div>
           </div>
-          <div class="col-sm-8 ">
-            <div class="row">
-              <span class="kanjiMeanings text-info"> day, sun, Japan, counter for days
-              </span>
-            </div>
-            <div class="row">
-              <span class="heading">Kun: </span>
-              <span class="text-info">
-                ひ、 -び、 -か
-              </span>  
-            </div>
-            <div class="row">
-              <span class="heading">On: </span>
-              <span class=" text-info">
-                ニチ、 ジツ
-              </span>  
-            </div>
-            <hr />
-          </div>
-      </div>
-      </div>
+          <hr />
+        </div>
+      </div> -->
     </div>
 
     <!-- Optional JavaScript -->
@@ -137,5 +100,6 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <script src="../js/vocabInfo.js"></script>
   </body>
 </html>

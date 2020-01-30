@@ -52,10 +52,8 @@ const buildRow = vocab => {
   tRow.append(deleteCell);
   // bind row click function to take you to vocab info
   tRow.click(() => {
-    //TODO: add vocab info page
-    //window.location.href = "../html/vocab-info-page.html" + "#" + kanji._id;
-    window.location.href = "../html/vocab-info-page.html";
 
+    window.location.href = "../html/vocab-info-page.html" + "#" + vocab._id;
   });
   return tRow;
 };

@@ -65,9 +65,21 @@ a:hover{
 .kanjiMeanings{
   font-size: 1em;
 }
-.heading{
+
+.kunReading::before{
+  content: 'Kun: ';
+  color: white;
   font-size: 1em;
   font-weight: bold;
   margin-right: 1em;
 }
+
+.onReading::before{
+  content: 'On: ';
+  color: white;
+  font-size: 1em;
+  font-weight: bold;
+  margin-right: 1em;
+}
+
 

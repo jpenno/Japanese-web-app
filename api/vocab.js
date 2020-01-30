@@ -63,6 +63,23 @@ router.get("/", (req, res) => {
       }
     });
 });
+// @route  Get api/Vocab/:id
+// @desc   get a vocab based on id
+// @access Public
+router.get("/:id", (req, res) => {
+  const vocabID = req.params.id;
+
+  db.getDB()
+    .collection(collection)
+    .find({ _id: db.getPrimaryKey(vocabID) })
+    .toArray((err, documents) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.json(documents);
+      }
+    });
+});
 
 // @route  Get api/getVocab/:word
 // @desc   get a vocab based on a word
