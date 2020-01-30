@@ -9,6 +9,14 @@ label{
   font-size: 28px;
 }
 
+a{
+  text-decoration: none;
+}
+
+a:hover{
+  text-decoration: none;
+}
+
 .link{
   font-family: Arial, Helvetica, sans-serif;
   font-size: 50px;
@@ -34,5 +42,32 @@ label{
   text-decoration: none;
   padding-right: 2%;
   color: black;
+}
+
+.wordColl {
+  min-width: 10em;
+  margin-top: 1.6em;
+  margin-right: 3em;
+}
+.word {
+  margin-top: 0em;
+  font-size: 3em;
+}
+.furugana {
+  font-size: 1em;
+}
+.kanjiColl{
+  margin-top: 1.6em;
+}
+.kanji{
+  font-size: 2em;
+}
+.kanjiMeanings{
+  font-size: 1em;
+}
+.heading{
+  font-size: 1em;
+  font-weight: bold;
+  margin-right: 1em;
 }
 
