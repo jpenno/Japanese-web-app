@@ -17,7 +17,9 @@ $(document).ready(async () => {
   const vocab = await getVocab();
 
   // set word
-  $("#word").html(vocab.word);
+  const word = $("#word");
+  word.html(vocab.word);
+  word.attr("href", vocab.jisyoLink);
   // set furugana
   $("#furugana").html(vocab.reading);
   // set word meaning
@@ -31,7 +33,7 @@ $(document).ready(async () => {
 
 const buildKanjiInfo = kanji => {
   kanjiInfoCol = $("#kanji-in-word");
-  
+
   const kanjiRow = $("<div>");
   kanjiRow.addClass("row ");
 
@@ -39,7 +41,8 @@ const buildKanjiInfo = kanji => {
   wordCol.addClass("col-2 mt-3");
 
   const word = $("<a>");
-  word.attr("href", "#");
+  word.attr("href", kanji.jisyoLink);
+  word.attr("target", "_blank");
   word.addClass("kanji");
   word.html(kanji.character);
 
