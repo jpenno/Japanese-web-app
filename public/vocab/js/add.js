@@ -1,7 +1,11 @@
 async function getKanji(kanji) {
   const res = await fetch(`/kanji/getkanji/${kanji}`, { method: "get" });
   const data = await res.json();
-  return data[0];
+  if(data.length == 1){
+    return data[0];
+  }else{
+    return false;
+  }
 }
 
 function isKanji(ch) {
@@ -14,7 +18,7 @@ $("#add-word").click(async e => {
   // Prevent actual submit
   e.preventDefault();
 
-  let errorHappened = false;
+  var errorHappened = false;
 
   const word = $("#word-user-input").val();
   const reading = $("#reading-user-input").val();
@@ -23,28 +27,20 @@ $("#add-word").click(async e => {
 
   let needToAddList = [];
   let kanjiList = [];
-  for (i = 0; i < word.length; i++) {
+
+  for(i = 0; i < word.length; i++){
     if (isKanji(word[i])) {
       // get the kanji from the database
-      const kanji = await getKanji(word[i]);
-      // check that the kanji exists in the database
-      if (kanji) {
-        kanjiList.push(kanji._id);
+      const kanjiID = await getKanji(word[i]);
+      if (kanjiID != false) {
+        kanjiList.push(kanjiID._id);
       } else {
+        errorHappened = true;
         needToAddList.push(word[i]);
       }
     }
   }
 
-  const vocab = {
-    word: word,
-    meaning: meaning,
-    reading: reading,
-    jisyoLink: jisyoLink,
-    kanjiInWord: kanjiList,
-  }
-
-  addVocab(vocab);
   // check if the user needs to add kanji
   if (needToAddList.length > 0) {
     errorHappened = true;
@@ -53,9 +49,18 @@ $("#add-word").click(async e => {
   }
 
   // check that no errors happened
-  if (!errorHappened) {
+  if (errorHappened == false) {
+    console.log(kanjiList);
     // let the user know that the vocab was added
     displayMessage(true, `added ${word}`);
+    const vocab = {
+      word: word,
+      meaning: meaning,
+      reading: reading,
+      jisyoLink: jisyoLink,
+      kanjiInWord: kanjiList
+    };
+    addVocab(vocab);
   }
 });
 
@@ -83,7 +88,7 @@ async function addVocab(vocab) {
       meaning: vocab.meaning,
       reading: vocab.reading,
       jisyoLink: vocab.jisyoLink,
-      kanjiInWord: vocab.kanjiInWord,
+      kanjiInWord: vocab.kanjiInWord
     }),
     headers: {
       "Content-Type": "application/json; charset=utf-8"
