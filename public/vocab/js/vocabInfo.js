@@ -30,17 +30,13 @@ $(document).ready(async () => {
 });
 
 const buildKanjiInfo = kanji => {
-  kanjiInWordDiv = $("#kanji-in-word");
-
-  const kanjiInfoCol = $("<div>");
-  kanjiInfoCol.addClass("col-sm-12 kanjiColl");
-  kanjiInfoCol.addClass("kanjiColl");
-
+  kanjiInfoCol = $("#kanji-in-word");
+  
   const kanjiRow = $("<div>");
-  kanjiRow.addClass("row");
+  kanjiRow.addClass("row ");
 
   const wordCol = $("<div>");
-  wordCol.addClass("col-sm-2");
+  wordCol.addClass("col-2 mt-3");
 
   const word = $("<a>");
   word.attr("href", "#");
@@ -51,10 +47,13 @@ const buildKanjiInfo = kanji => {
   kanjiRow.append(wordCol);
 
   const infoCol = $("<div>");
-  infoCol.addClass("col-sm-10");
+  infoCol.addClass("col-8 mt-3");
 
   const meaningRow = $("<div>");
-  meaningRow.addClass("row kanjiMeanings text-info");
+  meaningRow.addClass("row");
+  meaningRow.addClass("kanjiMeanings");
+  meaningRow.addClass("text-info");
+
   meaningRow.html(kanji.meaning);
   infoCol.append(meaningRow);
 
@@ -70,5 +69,4 @@ const buildKanjiInfo = kanji => {
 
   kanjiRow.append(infoCol);
   kanjiInfoCol.append(kanjiRow);
-  kanjiInWordDiv.append(kanjiInfoCol);
 };
