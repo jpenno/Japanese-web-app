@@ -21,11 +21,10 @@ $(document).ready(async () => {
 
   // set up clear search btn
   const clearSearchBtn = $("#clear-search-button");
-  clearSearchBtn.click( () => {
+  clearSearchBtn.click(() => {
     $("#search-results").empty();
     resultsTable.hide();
- });
-
+  });
 });
 
 const buildTable = (vocab, table) => {
@@ -46,36 +45,56 @@ const buildRow = vocab => {
   const meaningCell = $("<td>").html(vocab.meaning);
   tRow.append(meaningCell);
 
+  // set up info button
+  const infoCell = $("<td>");
+  infoCell.append(
+    buildBtn(vocab, ids.infoID, "Info", "btn-info", infoBtnClick)
+  );
+  tRow.append(infoCell);
+
   // set up delete button
   const deleteCell = $("<td>");
-  deleteCell.append(buildDeleteBtn(vocab, ids));
+  deleteCell.append(
+    buildBtn(
+      vocab,
+      { deleteID: ids.deleteID, rowID: ids.rowID },
+      "Delete",
+      "btn-danger",
+      deleteBtnClick
+    )
+  );
   tRow.append(deleteCell);
-  // bind row click function to take you to vocab info
-  tRow.click(() => {
-
-    window.location.href = "../html/vocab-info-page.html" + "#" + vocab._id;
-  });
   return tRow;
 };
 
-const buildDeleteBtn = (vocab, ids) => {
-  const deleteBtn = $("<button>");
-  deleteBtn.attr("id", ids.deleteID);
-  deleteBtn.addClass("btn");
-  deleteBtn.addClass("btn-danger");
-  deleteBtn.html("Delete");
-  deleteBtn.click(async () => {
-    const deleted = await deleteVocab(vocab);
-    if (deleted) {
-      $(`#${ids.rowID}`).remove();
-    }
+const buildBtn = (vocab, btnID, btnText, btnClass, onClick) => {
+  const btn = $("<button>");
+  btn.attr("id", btnID);
+  btn.addClass("btn");
+  btn.addClass(btnClass);
+  btn.html(btnText);
+  btn.click(() => {
+    onClick(vocab, btnID);
   });
-  return deleteBtn;
+  return btn;
+};
+
+const deleteBtnClick = async (vocab, ids) => {
+  const deleted = await deleteVocab(vocab);
+  console.log("ids.rowID", ids.rowID);
+  if (deleted) {
+    $(`#${ids.rowID}`).remove();
+  }
+};
+
+const infoBtnClick = vocab => {
+  window.location.href = "../html/vocab-info-page.html" + "#" + vocab._id;
 };
 
 const buildIDS = vocab => {
   return {
     rowID: `row-${vocab._id}`,
+    infoID: `info-${vocab._id}`,
     deleteID: `delete-${vocab._id}`
   };
 };

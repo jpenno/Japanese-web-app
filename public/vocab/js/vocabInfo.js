@@ -38,7 +38,7 @@ const buildKanjiInfo = kanji => {
   kanjiRow.addClass("row ");
 
   const wordCol = $("<div>");
-  wordCol.addClass("col-2 mt-3");
+  wordCol.addClass("col-2 mt-3 kanjiColl");
 
   const word = $("<a>");
   word.attr("href", kanji.jisyoLink);
