@@ -27,23 +27,37 @@ router.post("/", (req, res, next) => {
       error.status = 400;
       next(error);
     } else {
-      // if the character doesn't already exist add it to the database
-      db.getDB()
-        .collection(collection)
-        .insertOne(userInput, (err, result) => {
-          if (err) {
-            const error = new Error("failed to insert Todo document");
-            error.status = 400;
-            next(error);
-          } else {
-            res.json({
-              result: result,
-              document: result.ops[0],
-              msg: `Successfully inserted ${userInput.word}`,
-              error: null
-            });
-          }
-        });
+      const exists =
+        (await db
+          .getDB()
+          .collection(collection)
+          .find({ character: userInput.character })
+          .count()) > 0;
+      if (exists) {
+        // if the character exists send an error msg back
+        const error = new Error("word is already there");
+        error.status = 400;
+        next(error);
+      }
+      // add vocab to the database
+      else {
+        db.getDB()
+          .collection(collection)
+          .insertOne(userInput, (err, result) => {
+            if (err) {
+              const error = new Error(`failed to insert ${userInput.word}`);
+              error.status = 400;
+              next(error);
+            } else {
+              res.json({
+                result: result,
+                document: result.ops[0],
+                msg: `Successfully inserted ${userInput.word}`,
+                error: null
+              });
+            }
+          });
+      }
     }
   });
 });
@@ -114,6 +128,5 @@ router.delete("/:id", (req, res) => {
       }
     });
 });
-
 
 module.exports = router;
