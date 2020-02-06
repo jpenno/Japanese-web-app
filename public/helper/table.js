@@ -17,6 +17,12 @@ class Table {
     this.rowIDS = rowIDS;
   }
 
+  static buildRowIDS(name, id){
+    return id.map(item => {
+      return `${name}-${item._id}`;
+    });
+  }
+
   BuildTableTest() {
     const tableHead = $("<thead>");
     const tableHeadRow = $("<tr>");

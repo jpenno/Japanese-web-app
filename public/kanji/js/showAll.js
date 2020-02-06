@@ -3,10 +3,13 @@ $(document).ready(async () => {
   const resultsTable = $("#results-container");
   resultsTable.hide();
 
-  // set up table to show all kanji
   const kanji = await getAllKanji();
-  const table = $("#kanji-list");
-  buildTable(kanji, table);
+  const columns = ["Kanji", "Meaning", "Info", "Delete"];
+  const rowIDS = Table.buildRowIDS("row", kanji);
+  const data = buildTableData(kanji, rowIDS);
+
+  const kanjiTable = new Table($("#test-table"), columns, data, rowIDS);
+  kanjiTable.BuildTableTest();
 
   // set up search for kanji
   const search = $("#search-input");
@@ -15,7 +18,17 @@ $(document).ready(async () => {
     const searchResult = await getSearchResult(search.val());
     const searchTable = $("#search-results");
     searchTable.empty();
-    buildTable(searchResult, searchTable);
+    const searchRowIDS = Table.buildRowIDS("search-row", searchResult);
+    const data = buildTableData(searchResult, searchRowIDS);
+
+    const searchResultsTable = new Table(
+      $("#search-table"),
+      columns,
+      data,
+      rowIDS
+    );
+    searchResultsTable.BuildTableTest();
+
     resultsTable.show();
   });
 
@@ -27,56 +40,23 @@ $(document).ready(async () => {
   });
 });
 
-const buildTable = (kanji, table) => {
-  kanji.forEach(item => {
-    const row = buildRow(item);
-    table.append(row);
+const buildTableData = (data, searchRowIDS) => {
+  return data.map((item, i) => {
+    let values = Object.values(item);
+    values = values.slice(1, 3);
+    const infoBtn = new Button("btn btn-info", "info", infoBtnClick, {
+      vocabID: item._id
+    });
+    values.push(infoBtn);
+
+    const deleteBtn = new Button("btn btn-danger", "Delete", deleteBtnClick, {
+      kanjiID: item._id,
+      rowID: searchRowIDS[i]
+    });
+    values.push(deleteBtn);
+
+    return values;
   });
-};
-
-const buildRow = kanji => {
-  const ids = buildIDS(kanji);
-  const tRow = $("<tr>");
-  tRow.attr("id", ids.rowID);
-  // add word to row
-  const wordCell = $("<td>").html(kanji.character);
-  tRow.append(wordCell);
-  // add meaning to row
-  const meaningCell = $("<td>").html(kanji.meaning);
-  tRow.append(meaningCell);
-
-  // set up info button
-  const infoCell = $("<td>");
-  infoCell.append(
-    buildBtn(kanji, ids.infoID, "Info", "btn-info", infoBtnClick)
-  );
-  tRow.append(infoCell);
-
-  // set up delete button
-  const deleteCell = $("<td>");
-  deleteCell.append(
-    buildBtn(
-      kanji,
-      { deleteID: ids.deleteID, rowID: ids.rowID },
-      "Delete",
-      "btn-danger",
-      deleteBtnClick
-    )
-  );
-  tRow.append(deleteCell);
-  return tRow;
-};
-
-const buildBtn = (kanji, btnID, btnText, btnClass, onClick) => {
-  const btn = $("<button>");
-  btn.attr("id", btnID);
-  btn.addClass("btn");
-  btn.addClass(btnClass);
-  btn.html(btnText);
-  btn.click(() => {
-    onClick(kanji, btnID);
-  });
-  return btn;
 };
 
 const deleteBtnClick = async (kanji, ids) => {
@@ -87,22 +67,14 @@ const deleteBtnClick = async (kanji, ids) => {
   }
 };
 
-const infoBtnClick = kanji => {
-  window.location.href = "../html/kanji-info-page.html" + "#" + kanji._id;
-};
-
-const buildIDS = kanji => {
-  return {
-    rowID: `row-${kanji._id}`,
-    infoID: `info-${kanji._id}`,
-    deleteID: `delete-${kanji._id}`
-  };
+const infoBtnClick = btnData => {
+  window.location.href = "../html/kanji-info-page.html" + "#" + btnData.vocabID;
 };
 
 async function getSearchResult(search) {
   const res = await fetch(`/kanji/getkanji/${search}`, { method: "get" });
   const data = await res.json();
-  console.log('data', data);
+  console.log("data", data);
   return data;
 }
 
