@@ -1,12 +1,20 @@
 $(document).ready(async () => {
   // hid search results table
-  const resultsTable = $("#results-container");
-  resultsTable.hide();
-
-  // set up table to show all vocab
+  const resultsElement = $("#results-container");
+  resultsElement.hide();
   const vocab = await getAllVocab();
-  const table = $("#word-list");
-  buildTable(vocab, table);
+
+  // build rowIDS
+  const rowIDS = vocab.map(word => {
+    return `row-${word._id}`;
+  });
+
+  const data = buildTableData(vocab, rowIDS);
+
+  const columns = ["Word", "Meaning", "Info", "Delete"];
+
+  wordTable = new Table($("#test-table"), columns, data, rowIDS);
+  wordTable.BuildTableTest();
 
   // set up search for word
   const search = $("#search-input");
@@ -15,88 +23,65 @@ $(document).ready(async () => {
     const searchResult = await getSearchResult(search.val());
     const searchTable = $("#search-results");
     searchTable.empty();
-    buildTable(searchResult, searchTable);
-    resultsTable.show();
+
+    const searchRowIDS = searchResult.map(word => {
+      return `result-row-${word._id}`;
+    });
+    const data = buildTableData(searchResult, searchRowIDS);
+
+    const resultTable = new Table(
+      $("#search-results"),
+      columns,
+      data,
+      searchRowIDS
+    );
+    resultTable.BuildTableTest();
+
+    resultsElement.show();
   });
 
   // set up clear search btn
   const clearSearchBtn = $("#clear-search-button");
   clearSearchBtn.click(() => {
     $("#search-results").empty();
-    resultsTable.hide();
+    resultsElement.hide();
   });
 });
 
-const buildTable = (vocab, table) => {
-  vocab.forEach(item => {
-    const row = buildRow(item);
-    table.append(row);
-  });
-};
+const buildTableData = (data, searchRowIDS) =>{
+  return data.map((item, i) => {
+    let values = Object.values(item);
+    values = values.slice(1, 3);
+    const infoBtn = new Button("btn btn-info", "info", infoBtnClick, {
+      vocabID: item._id
+    });
+    values.push(infoBtn);
 
-const buildRow = vocab => {
-  const ids = buildIDS(vocab);
-  const tRow = $("<tr>");
-  tRow.attr("id", ids.rowID);
-  // add word to row
-  const wordCell = $("<td>").html(vocab.word);
-  tRow.append(wordCell);
-  // add meaning to row
-  const meaningCell = $("<td>").html(vocab.meaning);
-  tRow.append(meaningCell);
-
-  // set up info button
-  const infoCell = $("<td>");
-  infoCell.append(
-    buildBtn(vocab, ids.infoID, "Info", "btn-info", infoBtnClick)
-  );
-  tRow.append(infoCell);
-
-  // set up delete button
-  const deleteCell = $("<td>");
-  deleteCell.append(
-    buildBtn(
-      vocab,
-      { deleteID: ids.deleteID, rowID: ids.rowID },
+    const deleteBtn = new Button(
+      "btn btn-danger",
       "Delete",
-      "btn-danger",
-      deleteBtnClick
-    )
-  );
-  tRow.append(deleteCell);
-  return tRow;
-};
+      deleteBtnClick,
+      {
+        vocabID: item._id,
+        rowID: searchRowIDS[i]
+      }
+    );
+    values.push(deleteBtn);
 
-const buildBtn = (vocab, btnID, btnText, btnClass, onClick) => {
-  const btn = $("<button>");
-  btn.attr("id", btnID);
-  btn.addClass("btn");
-  btn.addClass(btnClass);
-  btn.html(btnText);
-  btn.click(() => {
-    onClick(vocab, btnID);
+    return values;
   });
-  return btn;
-};
+}
 
-const deleteBtnClick = async (vocab, ids) => {
-  const deleted = await deleteVocab(vocab);
-  console.log("ids.rowID", ids.rowID);
+const deleteBtnClick = async btnData => {
+  const deleted = await deleteVocab(btnData.vocabID);
+  console.log("btnData.rowID", btnData.rowID);
   if (deleted) {
-    $(`#${ids.rowID}`).remove();
+    $(`#${btnData.rowID}`).remove();
   }
 };
 
-const infoBtnClick = vocab => {
-  window.location.href = "../html/vocab-info-page.html" + "#" + vocab._id;
-};
-
-const buildIDS = vocab => {
-  return {
-    rowID: `row-${vocab._id}`,
-    infoID: `info-${vocab._id}`,
-    deleteID: `delete-${vocab._id}`
-  };
+const infoBtnClick = btnData => {
+  window.location.href = "../html/vocab-info-page.html" + "#" + btnData.vocabID;
 };
 
 async function getSearchResult(search) {
@@ -111,8 +96,8 @@ async function getAllVocab() {
   return data;
 }
 
-async function deleteVocab(vocab, ids) {
-  const res = await fetch(`/vocab/${vocab._id}`, { method: "delete" });
+async function deleteVocab(vocabID) {
+  const res = await fetch(`/vocab/${vocabID}`, { method: "delete" });
   const data = await res.json();
   if (data.ok == 1) {
     return true;
