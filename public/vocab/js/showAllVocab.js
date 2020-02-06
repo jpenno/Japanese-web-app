@@ -13,7 +13,7 @@ $(document).ready(async () => {
 
   const columns = ["Word", "Meaning", "Info", "Delete"];
 
-  wordTable = new Table($("#test-table"), columns, data, rowIDS);
+  wordTable = new Table($("#word-table"), columns, data, rowIDS);
   wordTable.BuildTableTest();
 
   // set up search for word
