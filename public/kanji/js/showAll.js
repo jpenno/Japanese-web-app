@@ -25,7 +25,7 @@ $(document).ready(async () => {
       $("#search-table"),
       columns,
       data,
-      rowIDS
+      searchRowIDS
     );
     searchResultsTable.BuildTableTest();
 
@@ -42,6 +42,7 @@ $(document).ready(async () => {
 
 const buildTableData = (data, searchRowIDS) => {
   return data.map((item, i) => {
+    console.log('searchRowIDS', searchRowIDS[i]);
     let values = Object.values(item);
     values = values.slice(1, 3);
     const infoBtn = new Button("btn btn-info", "info", infoBtnClick, {
@@ -59,11 +60,11 @@ const buildTableData = (data, searchRowIDS) => {
   });
 };
 
-const deleteBtnClick = async (kanji, ids) => {
-  const deleted = await deleteKanji(kanji);
-  console.log("ids.rowID", ids.rowID);
+const deleteBtnClick = async (btnData) => {
+  const deleted = await deleteKanji(btnData.kanjiID);
+  console.log("ids.rowID", btnData.rowID);
   if (deleted) {
-    $(`#${ids.rowID}`).remove();
+    $(`#${btnData.rowID}`).remove();
   }
 };
 
@@ -84,8 +85,8 @@ async function getAllKanji() {
   return data;
 }
 
-async function deleteKanji(kanji) {
-  const res = await fetch(`/kanji/${kanji._id}`, { method: "delete" });
+async function deleteKanji(id) {
+  const res = await fetch(`/kanji/${id}`, { method: "delete" });
   const data = await res.json();
   if (data.ok == 1) {
     return true;
